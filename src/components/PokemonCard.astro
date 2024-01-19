@@ -1,8 +1,16 @@
 ---
-const { name, url } = Astro.props
+import { Debug } from 'astro:components'
+const { url } = Astro.props
+
+const pokemon = await fetch(url)
+  .then(res => res.json())
+  .then(data => data)
 ---
-<section>
-  <h1>{name}</h1>
-  <figure>
-    <img src={url}></figure>
+<section class="flex flex-col gap-4  ">
+  <header>
+    <h1 class="text-3xl text-center text-yellow-300 pt-4">{pokemon.name}</h1>
+  </header>
+  <figure class="grid place-items-center bg-neutral-50 rounded-xl h-full p-5 shadow-xl shadow-slate-900 hover:bg-neutral-300 hover:-translate-y-2  transition-all">
+    <img src={pokemon.sprites.other.dream_world.front_default} alt={pokemon.name} /> 
+  </figure>  
 </section>
