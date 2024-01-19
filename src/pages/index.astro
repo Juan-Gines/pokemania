@@ -1,16 +1,21 @@
 ---
+import { Debug } from 'astro:components'
+import BaseLayout from '../layouts/BaseLayout.astro'
 
+const title = 'Pokemania - 1ª generación'
+const pokemons = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
+	.then(res => res.json())
+	.then(data => data.results)
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={title}>
+	<header class="flex flex-col items-center gap-4 text-balance py-4">
+		<h1 class="text-6xl font-bold bg-clip-text text-transparent bg-[#FDCA1B]">Pokemania</h1>
+		<h3 class="text-xl font-semibold">Tu wiki de la primera generación de pokemons</h3>
+		<div class="grid grid-flow-col auto-cols-max gap-4">
+			{pokemons.map(p=> <p>{p.name}</p>)}
+		</div>
+	</header>
+</BaseLayout>
+
+	
