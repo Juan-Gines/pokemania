@@ -3,18 +3,20 @@ import BaseLayout from '../layouts/BaseLayout.astro'
 import PokemonCard from '../components/PokemonCard.astro'
 
 const title = 'Pokemania - 1ª generación'
-const pokemons = await fetch('https://pokeapi.co/api/v2/pokemon?limit=21')
+const pokemons = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151')
 	.then(res => res.json())
 	.then(data => data.results.map(p => p.url))
+	.then(urls => urls.map(url => fetch(url).then(res => res.json())))
+	.then(promises => Promise.all(promises))
 ---
 
 <BaseLayout title={title}>
 	<header class="flex flex-col items-center gap-4 text-balance py-4 mb-4">
-		<h1 class="text-6xl font-bold bg-clip-text text-transparent bg-[#FDCA1B]">Pokemania</h1>
+		<h1 class="text-6xl font-bold text-primary">Pokemania</h1>
 		<h3 class="text-xl font-semibold">Tu wiki de la primera generación de pokemons</h3>		
 	</header>
-	<div class="grid grid-cols-3 gap-4 p-5 ">
-		{pokemons.map(p=> <PokemonCard url={p} /> )}
+	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 max-w-6xl m-auto gap-4 md:gap-6 p-10 ">
+		{pokemons.map(p=> <PokemonCard pokemon={p} /> )}
 	</div>
 </BaseLayout>
 

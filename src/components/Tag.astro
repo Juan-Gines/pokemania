@@ -1,0 +1,29 @@
+---
+const { type } = Astro.props
+const tags = await fetch
+const colors = {
+  planta: 'bg-[#9bcc4f]',
+  veneno: 'bg-[#B97FC9]',
+  fuego: 'bg-[#FC7C24]',
+  volador: 'bg-[#BDB9B8]',
+  agua: 'bg-[#4592C4]',
+  bicho: 'bg-[#729F3F]',
+  normal: 'bg-[#A4ACAF]',
+  eléctrico: 'bg-[#EED435]',
+  tierra: 'bg-[#AB9841]',
+  hada: 'bg-[#FDB9E9]',
+  lucha: 'bg-[#D46722]',
+  psíquico: 'bg-[#F366B9]',
+  roca: 'bg-[#A38C21]',
+  acero: 'bg-[#9EB7B8]',
+  hielo: 'bg-[#51C4E7]',
+  fantasma: 'bg-[#7B63A3]',
+  dragón: 'bg-[#F06D57]',
+  siniestro: 'bg-[#707070]'
+}
+
+---
+
+<p class={`${colors[type.toLowerCase()]} rounded-full px-2.5 font-bold border border-neutral-700 text-neutral-900 shadow shadow-neutral-700`}>
+  {type}
+</p>

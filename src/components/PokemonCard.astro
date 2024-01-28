@@ -1,16 +1,33 @@
 ---
-import { Debug } from 'astro:components'
-const { url } = Astro.props
+import Tag from './Tag.astro';
 
-const pokemon = await fetch(url)
-  .then(res => res.json())
-  .then(data => data)
+const { pokemon } = Astro.props;
+
+const typesUrl = pokemon.types.map((type) => type.type.url);
+const types = await Promise.all(typesUrl.map((url) => fetch(url).then((res) => res.json()))).then(
+	(res) => res.map((type) => type.names[5].name)
+);
+const name = pokemon.name[0].toUpperCase() + pokemon.name.slice(1);
 ---
-<section class="flex flex-col gap-4  ">
-  <header>
-    <h1 class="text-3xl text-center text-yellow-300 pt-4">{pokemon.name}</h1>
-  </header>
-  <figure class="grid place-items-center bg-neutral-50 rounded-xl h-full p-5 shadow-xl shadow-slate-900 hover:bg-neutral-300 hover:-translate-y-2  transition-all">
-    <img src={pokemon.sprites.other.dream_world.front_default} alt={pokemon.name} /> 
-  </figure>  
+
+<section class='flex flex-col gap-4 items-center'>
+	<a href={`/pokemon/${pokemon.name}`}>
+		<div
+			class='flex flex-auto flex-col bg-secondary rounded-xl shadow-xl shadow-gray-500 hover:bg-quaternary text-tertiary hover:text-primary items-center p-5 hover:-translate-y-2 gap-4 transition-all'
+		>
+			<header>
+				<h1 class='text-2xl font-bold text-center'>{pokemon.id} {name}</h1>
+			</header>
+			<figure>
+				<img
+					src={pokemon.sprites.other.home.front_default}
+					alt={pokemon.name}
+				/>
+			</figure>
+			<div class='flex w-full flex-row gap-2 justify-start'>
+				{types.map((type) => <Tag type={type} />)}
+			</div>
+		</div>
+		<div class='flex flex-col gap-4 items-start'></div>
+	</a>
 </section>

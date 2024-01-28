@@ -1,0 +1,19 @@
+colores pokemon:
+1 planta: #9BCC4F
+2 veneno: #B97FC9
+3 fuego: #FC7C24
+4 volador: #3DC7F0 / #BDB9B8
+5 agua: #4592C4
+6 bicho: #729F3F
+7 normal: #A4ACAF
+8 electrico: #EED435
+9 tierra: #F7DE40 / #AB9841
+10 hada: #FDB9E9
+11 lucha: #D46722
+12 psiquico: #F366B9
+13 roca: #A38C21
+14 acero: #9EB7B8
+15 hielo: #51C4E7
+16 fantasma: #7B63A3
+17 dragon: #53A4CF / #F06D57
+18 siniestro: #707070

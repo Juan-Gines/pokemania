@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+export const getStaticPaths = async () => {
+  const names = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151').then(res => res.json()).then(res => res.results.map((p) => p.name))  
+  return names.map((name) => { 
+    return {
+      params: { pokemon: name }
+    } 
+  })
+}
+const { pokemon } = Astro.params
+
+---
+<BaseLayout title={pokemon}>
+  <h1>{pokemon}</h1>
+</BaseLayout>
