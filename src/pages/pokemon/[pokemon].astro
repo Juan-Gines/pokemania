@@ -1,5 +1,4 @@
 ---
-import { Debug } from 'astro:components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 export async function getStaticPaths() {
   const names = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151').then(res => res.json()).then(res => res.results.map((p) => p.name))  
@@ -10,17 +9,13 @@ export async function getStaticPaths() {
   })
 }
 const { pokemon } = Astro.params
+
+// Data del pokemon
 const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(res => res.json())
-const habilidadesUrl = data.abilities.map((ability) => {
-  return ability.ability.url
-})
-const habilidades = await Promise.all(habilidadesUrl.map((url) => fetch(url).then((res) => res.json())))
-const NombreHabilidades = habilidades.map((habilidad) => {
-  return habilidad.names[5].name
-})
-const descHabilidades = habilidades.map((habilidade) => {
-  return habilidade.effect_entries[0].effect
-})    
+
+// Habilidades del pokemon
+const habilidades = await Promise.all(data.abilities.map((ability) => fetch(ability.ability.url).then((res) => res.json())))
+const forms = await fetch(data.forms[0].url).then((res) => res.json())
 ---
 <BaseLayout title={pokemon}>
   <header class="flex items-center justify-center text-6xl font-bold text-primary capitalize p-10">
@@ -39,5 +34,4 @@ const descHabilidades = habilidades.map((habilidade) => {
       </div>
     </div>
   </main>
-  <Debug {NombreHabilidades}/>
 </BaseLayout>
