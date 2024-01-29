@@ -1,6 +1,7 @@
 ---
+import { Debug } from 'astro:components';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-export const getStaticPaths = async () => {
+export async function getStaticPaths() {
   const names = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151').then(res => res.json()).then(res => res.results.map((p) => p.name))  
   return names.map((name) => { 
     return {
@@ -9,8 +10,34 @@ export const getStaticPaths = async () => {
   })
 }
 const { pokemon } = Astro.params
-
+const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(res => res.json())
+const habilidadesUrl = data.abilities.map((ability) => {
+  return ability.ability.url
+})
+const habilidades = await Promise.all(habilidadesUrl.map((url) => fetch(url).then((res) => res.json())))
+const NombreHabilidades = habilidades.map((habilidad) => {
+  return habilidad.names[5].name
+})
+const descHabilidades = habilidades.map((habilidade) => {
+  return habilidade.effect_entries[0].effect
+})    
 ---
 <BaseLayout title={pokemon}>
-  <h1>{pokemon}</h1>
+  <header class="flex items-center justify-center text-6xl font-bold text-primary capitalize p-10">
+    <h1>{pokemon}</h1>
+  </header>
+  <main>
+    <div class="flex flex-col items-center justify-center">
+      <img src={data.sprites.other.home.front_default} alt={pokemon} />
+      <div class="flex flex-col items-center justify-center">
+        <h2 class="text-2xl font-bold text-primary">Habilidades</h2>
+        <ul class="flex flex-col items-center justify-center">
+          {habilidades.map((h) => {
+            return <li class="text-xl font-bold text-secondary capitalize">{h.names[5].name}</li>
+          })}
+        </ul>
+      </div>
+    </div>
+  </main>
+  <Debug {NombreHabilidades}/>
 </BaseLayout>
