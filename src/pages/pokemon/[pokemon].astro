@@ -16,6 +16,7 @@ const data = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}`).then(re
 // Habilidades del pokemon
 const habilidades = await Promise.all(data.abilities.map((ability) => fetch(ability.ability.url).then((res) => res.json())))
 const forms = await fetch(data.forms[0].url).then((res) => res.json())
+const estadisticas = await Promise.all(data.stats.map((stat) => fetch(stat.stat.url).then((res) => res.json())))
 ---
 <BaseLayout title={pokemon}>
   <header class="flex items-center justify-center text-6xl font-bold text-primary capitalize p-10">
@@ -32,6 +33,13 @@ const forms = await fetch(data.forms[0].url).then((res) => res.json())
           })}
         </ul>
       </div>
+      <div class="flex flex-col items-center justify-center">
+        <h2 class="text-2xl font-bold text-primary">Estadísticas</h2>
+        <ul class="flex flex-col items-center justify-center">
+        {estadisticas.map((e, id) => {
+          return <li class="text-xl font-bold text-secondary capitalize">{e.names[5].name} {data.stats[id].base_stat}</li>
+        })}
+        </ul>
     </div>
   </main>
 </BaseLayout>
